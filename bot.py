@@ -10,23 +10,25 @@ from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
 
 from storage.memory import InMemoryStorage
-from game.errors import GameError, SessionNotFound
+from game.errors import GameError
 
 load_dotenv()
 
 TOKEN = os.getenv("BOT_TOKEN")
 if not TOKEN:
-    raise RuntimeError("BOT_TOKEN не найден. Проверь .env")
+    raise RuntimeError("BOT_TOKEN not found. Check your .env file.")
 
 storage = InMemoryStorage()
 
+
 def main_menu() -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
-        [InlineKeyboardButton(text="🎲 Новая игра", callback_data="newgame")],
-        [InlineKeyboardButton(text="👥 Игроки", callback_data="players")],
-        [InlineKeyboardButton(text="🚀 Старт", callback_data="start")],
-        [InlineKeyboardButton(text="ℹ️ Статус", callback_data="status")],
+        [InlineKeyboardButton(text="🎲 New game", callback_data="newgame")],
+        [InlineKeyboardButton(text="👥 Players", callback_data="players")],
+        [InlineKeyboardButton(text="🚀 Start", callback_data="start")],
+        [InlineKeyboardButton(text="ℹ️ Status", callback_data="status")],
     ])
+
 
 def is_group(chat: types.Chat) -> bool:
     return chat.type in ("group", "supergroup")
@@ -38,20 +40,20 @@ async def main() -> None:
 
     @dp.message(CommandStart())
     async def start_menu(message: types.Message):
-        await message.answer("Меню управления:", reply_markup=main_menu())
+        await message.answer("Control menu:", reply_markup=main_menu())
 
     @dp.message(Command("newgame"))
     async def newgame(message: types.Message):
         if not is_group(message.chat):
-            await message.answer("Команда работает только в группе.")
+            await message.answer("This command works only in group chats.")
             return
 
         session = storage.create_session(message.chat.id, message.from_user.id)
         session.add_player(message.from_user.id, message.from_user.username)
 
         await message.answer(
-            f"🎲 Игра создана!\n"
-            f"Код: <b>{session.code}</b>\n"
+            f"🎲 Game created!\n"
+            f"Code: <b>{session.code}</b>\n"
             f"/join {session.code}\n"
             f"/players\n"
             f"/start"
@@ -64,17 +66,17 @@ async def main() -> None:
 
         parts = message.text.split()
         if len(parts) != 2:
-            await message.answer("Использование: /join CODE")
+            await message.answer("Usage: /join CODE")
             return
 
         try:
             session = storage.get_by_code(parts[1])
             if session.chat_id != message.chat.id:
-                await message.answer("Этот код из другой группы.")
+                await message.answer("This code belongs to another group chat.")
                 return
 
             player = session.add_player(message.from_user.id, message.from_user.username)
-            await message.answer(f"✅ {player.username} присоединился.")
+            await message.answer(f"✅ {player.username} joined the lobby.")
         except GameError as e:
             await message.answer(f"⚠️ {e}")
 
@@ -91,7 +93,7 @@ async def main() -> None:
         try:
             session = storage.get_by_chat(message.chat.id)
             session.start(message.from_user.id)
-            await message.answer("🚀 Игра началась (M1).")
+            await message.answer("🚀 The game has started (M1).")
         except GameError as e:
             await message.answer(f"⚠️ {e}")
 
@@ -99,22 +101,22 @@ async def main() -> None:
     async def callbacks(call: types.CallbackQuery):
         data = call.data
 
-        # чтобы Telegram убрал "часики" на кнопке
+        # Tell Telegram to remove the loading spinner on the button
         await call.answer()
 
         if data == "newgame":
-            # имитируем /newgame
+            # Simulate /newgame
             message = call.message
             if not is_group(message.chat):
-                await message.answer("Эта кнопка работает только в группе.")
+                await message.answer("This button works only in group chats.")
                 return
 
             session = storage.create_session(message.chat.id, call.from_user.id)
             session.add_player(call.from_user.id, call.from_user.username)
 
             await message.answer(
-                f"🎲 Игра создана!\n"
-                f"Код: <b>{session.code}</b>\n"
+                f"🎲 Game created!\n"
+                f"Code: <b>{session.code}</b>\n"
                 f"/join {session.code}\n"
                 f"/players\n"
                 f"/start",
@@ -134,7 +136,7 @@ async def main() -> None:
             try:
                 session = storage.get_by_chat(message.chat.id)
                 session.start(call.from_user.id)
-                await message.answer("🚀 Игра началась (M1).", reply_markup=main_menu())
+                await message.answer("🚀 The game has started (M1).", reply_markup=main_menu())
             except GameError as e:
                 await message.answer(f"⚠️ {e}", reply_markup=main_menu())
 
@@ -143,9 +145,9 @@ async def main() -> None:
             try:
                 session = storage.get_by_chat(message.chat.id)
                 await message.answer(
-                    f"Статус: <b>{session.state}</b>\n"
-                    f"Код: <b>{session.code}</b>\n"
-                    f"Игроки: {len(session.players)}/{session.max_players}",
+                    f"Status: <b>{session.state}</b>\n"
+                    f"Code: <b>{session.code}</b>\n"
+                    f"Players: {len(session.players)}/{session.max_players}",
                     reply_markup=main_menu()
                 )
             except GameError as e:
