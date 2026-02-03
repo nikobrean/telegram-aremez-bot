@@ -57,3 +57,26 @@ bot.py        - Telegram bot entrypoint (handlers, routers, startup)
 game/         - Game domain logic (sessions, rules, errors)
 storage/      - In-memory storage for game sessions
 docs/         - Project documentation and design decisions
+```
+## How to Run Locally
+
+1. Clone the repository  
+2. Create a `.env` file in the project root  
+3. Add your Telegram bot token to `.env`:
+
+```env
+BOT_TOKEN=your_bot_token_here
+```
+4. Install dependencies
+5. Run the bot:
+```
+python bot.py
+```
+
+
+## Notes
+- The .env file is ignored by git and must not be committed
+
+- In M1, all game state is stored in memory and will be lost on restart
+
+- This project is intended as a learning and portfolio project
