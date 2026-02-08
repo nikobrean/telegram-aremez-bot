@@ -40,13 +40,13 @@ class GameSession:
 
     def add_player(self, telegram_id: int, username: Optional[str]) -> Player:
         if self.state != SessionState.LOBBY:
-            raise SessionAlreadyStarted("Игра уже началась. Присоединиться нельзя.")
+            raise SessionAlreadyStarted("The game has already started. You cannot join now.")
 
         if any(p.telegram_id == telegram_id for p in self.players):
-            raise PlayerAlreadyJoined("Ты уже в игре.")
+            raise PlayerAlreadyJoined("You are already in the lobby.")
 
         if len(self.players) >= self.max_players:
-            raise SessionFull(f"Игра заполнена (макс {self.max_players}).")
+            raise SessionFull(f"The lobby is full (max {self.max_players}).")
 
         player = Player(
             telegram_id=telegram_id,
@@ -58,18 +58,18 @@ class GameSession:
 
     def start(self, requester_id: int) -> None:
         if requester_id != self.owner_id:
-            raise NotOwner("Только создатель игры может её начать.")
+            raise NotOwner("Only the lobby owner can start the game.")
 
         if self.state != SessionState.LOBBY:
-            raise SessionAlreadyStarted("Игра уже началась.")
+            raise SessionAlreadyStarted("Game has already stared.")
 
         if len(self.players) < self.min_players:
-            raise NotEnoughPlayers(f"Нужно минимум {self.min_players} игроков.")
+            raise NotEnoughPlayers(f"At least {self.min_players} players are required to start.")
 
         self.state = SessionState.STARTED
 
     def players_text(self) -> str:
-        lines = [f"Игроки ({len(self.players)}/{self.max_players}):"]
+        lines = [f"Players ({len(self.players)}/{self.max_players}):"]
         for i, p in enumerate(self.players, start=1):
             lines.append(f"{i}. {p.username}")
         return "\n".join(lines)

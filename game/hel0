@@ -1,0 +1,8 @@
+@dp.message(Command("help"))
+async def help_cmd(message: types.Message):
+    await message.answer("Help text here")
+
+ InlineKeyboardButton(text="❓ Help", callback_data="help")
+
+elif data == "help":
+    await call.message.answer("Help text here", reply_markup=main_menu())

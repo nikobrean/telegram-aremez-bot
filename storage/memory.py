@@ -29,11 +29,11 @@ class InMemoryStorage:
     def get_by_chat(self, chat_id: int) -> GameSession:
         session = self.by_chat.get(chat_id)
         if not session:
-            raise SessionNotFound("Нет активной игры. Используй /newgame")
+            raise SessionNotFound("There is no active game. Use /newgame")
         return session
 
     def get_by_code(self, code: str) -> GameSession:
         session = self.by_code.get(code.upper())
         if not session:
-            raise SessionNotFound("Неверный код.")
+            raise SessionNotFound("Invalid code.")
         return session
