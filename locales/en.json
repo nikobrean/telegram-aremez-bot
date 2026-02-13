@@ -1,0 +1,42 @@
+{
+  "private_welcome_title": "👋 <b>Hi! I’m Aremes Bot</b>",
+  "private_welcome_text": "I run the game in a <b>group chat</b>.\n\n<b>How to start:</b>\n1) Add me to a group\n2) In the group tap /newgame or «Create game»\n3) Players tap «Join»\n4) When 3–6 players, host taps «Start»\n\n📌 <i>No spam — I edit one panel.</i>",
+
+  "group_welcome_title": "🎲 <b>Aremes in group</b>",
+  "group_welcome_text": "This is a detective game.\n\n<b>To begin:</b>\nTap «Create game» or type /newgame\n\n📜 Rules and commands — below.",
+
+  "rules_title": "📜 <b>Rules</b>",
+  "rules_text": "Currently M1 (lobby) is implemented.\n\nNext is M2: cards and turns.\n\n✅ <b>To start — press /newgame</b>",
+
+  "commands_title": "📋 <b>Commands</b>",
+  "commands_text": "/start — menu\n/newgame — create game (group)\n/players — refresh panel\n/startgame — start (host)\n/rules — rules\n/help — help",
+
+  "panel_title": "🎲 <b>Aremes — Lobby</b>",
+  "panel_status": "🟢 <b>Status:</b> {state}",
+  "panel_players": "👥 <b>Players:</b> {count}/{max}",
+  "panel_hint_lobby": "Tap ✅ <b>Join</b>. Host taps ▶️ <b>Start</b> when 3–6 players.",
+  "panel_hint_started": "Game started (M1). Next is M2: dealing cards and turns.",
+
+  "btn_create_game": "🎲 Create game",
+  "btn_open_panel": "📌 Show panel",
+  "btn_how": "🎮 How to play",
+  "btn_rules": "📜 Rules",
+  "btn_commands": "📋 Commands",
+  "btn_language": "🌐 Language",
+  "btn_back": "⬅️ Back",
+
+  "btn_join": "✅ Join",
+  "btn_start": "▶️ Start",
+  "btn_players": "👥 Players",
+  "btn_refresh": "🔄 Refresh",
+
+  "lang_choose": "🌐 <b>Choose language</b>:",
+  "lang_set": "✅ Language updated.",
+
+  "toast_joined": "✅ Joined",
+  "toast_already_joined": "🙂 Already joined",
+  "toast_full": "⚠️ Lobby is full",
+  "toast_owner_only": "⚠️ Host only",
+  "toast_need_three": "⚠️ Need at least 3 players",
+  "toast_no_game": "⚠️ No active game. Tap /newgame"
+}

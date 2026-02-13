@@ -1,0 +1,42 @@
+{
+  "private_welcome_title": "👋 <b>היי! אני הבוט Aremes</b>",
+  "private_welcome_text": "אני מנהל את המשחק ב<b>קבוצה</b>.\n\n<b>איך מתחילים:</b>\n1) הוסף אותי לקבוצה\n2) בקבוצה לחץ /newgame או «Create game»\n3) שחקנים לוחצים «Join»\n4) כשיש 3–6 שחקנים הבעלים לוחץ «Start»\n\n📌 <i>בלי ספאם — אני עורך פאנל אחד.</i>",
+
+  "group_welcome_title": "🎲 <b>Aremes בקבוצה</b>",
+  "group_welcome_text": "זה משחק בלשים.\n\n<b>כדי להתחיל:</b>\nלחץ «Create game» או כתוב /newgame\n\n📜 חוקים ופקודות — למטה.",
+
+  "rules_title": "📜 <b>חוקים</b>",
+  "rules_text": "כרגע ממומש M1 (לובי).\n\nהבא הוא M2: קלפים ותורות.\n\n✅ <b>כדי להתחיל — לחץ /newgame</b>",
+
+  "commands_title": "📋 <b>פקודות</b>",
+  "commands_text": "/start — תפריט\n/newgame — יצירת משחק (קבוצה)\n/players — רענון פאנל\n/startgame — התחלה (בעלים)\n/rules — חוקים\n/help — עזרה",
+
+  "panel_title": "🎲 <b>Aremes — לובי</b>",
+  "panel_status": "🟢 <b>סטטוס:</b> {state}",
+  "panel_players": "👥 <b>שחקנים:</b> {count}/{max}",
+  "panel_hint_lobby": "לחץ ✅ <b>Join</b>. הבעלים לוחץ ▶️ <b>Start</b> כשיש 3–6 שחקנים.",
+  "panel_hint_started": "המשחק התחיל (M1). הבא הוא M2: חלוקת קלפים ותורות.",
+
+  "btn_create_game": "🎲 Create game",
+  "btn_open_panel": "📌 Show panel",
+  "btn_how": "🎮 How to play",
+  "btn_rules": "📜 Rules",
+  "btn_commands": "📋 Commands",
+  "btn_language": "🌐 Language",
+  "btn_back": "⬅️ Back",
+
+  "btn_join": "✅ Join",
+  "btn_start": "▶️ Start",
+  "btn_players": "👥 Players",
+  "btn_refresh": "🔄 Refresh",
+
+  "lang_choose": "🌐 <b>בחר שפה</b>:",
+  "lang_set": "✅ השפה עודכנה.",
+
+  "toast_joined": "✅ הצטרפת",
+  "toast_already_joined": "🙂 כבר בפנים",
+  "toast_full": "⚠️ הלובי מלא",
+  "toast_owner_only": "⚠️ רק הבעלים",
+  "toast_need_three": "⚠️ צריך לפחות 3 שחקנים",
+  "toast_no_game": "⚠️ אין משחק פעיל. לחץ /newgame"
+}

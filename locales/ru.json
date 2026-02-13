@@ -1,0 +1,42 @@
+{
+  "private_welcome_title": "👋 <b>Привет! Я Aremes Bot</b>",
+  "private_welcome_text": "Я веду игру в <b>групповом чате</b>.\n\n<b>Как начать:</b>\n1) Добавь меня в группу\n2) В группе нажми /newgame или кнопку «Создать игру»\n3) Игроки нажимают «Вступить»\n4) Когда 3–6 игроков — создатель нажимает «Старт»\n\n📌 <i>Кнопки не флудят — я редактирую одну панель.</i>",
+
+  "group_welcome_title": "🎲 <b>Aremes в группе</b>",
+  "group_welcome_text": "Это детективная игра.\n\n<b>Чтобы начать:</b>\nНажми кнопку «Создать игру» или введи /newgame\n\n📜 Правила и команды — ниже.",
+
+  "rules_title": "📜 <b>Правила</b>",
+  "rules_text": "Сейчас реализован этап M1: лобби.\n\nДальше будет M2: карты и ходы.\n\n✅ <b>Чтобы начать игру — нажми /newgame</b>",
+
+  "commands_title": "📋 <b>Команды</b>",
+  "commands_text": "/start — меню\n/newgame — создать игру (в группе)\n/players — обновить панель\n/startgame — старт (создатель)\n/rules — правила\n/help — помощь",
+
+  "panel_title": "🎲 <b>Aremes — Лобби</b>",
+  "panel_status": "🟢 <b>Статус:</b> {state}",
+  "panel_players": "👥 <b>Игроки:</b> {count}/{max}",
+  "panel_hint_lobby": "Нажми ✅ <b>Вступить</b>. Создатель нажимает ▶️ <b>Старт</b> когда 3–6 игроков.",
+  "panel_hint_started": "Игра началась (M1). Далее будет M2: раздача карт и ходы.",
+
+  "btn_create_game": "🎲 Создать игру",
+  "btn_open_panel": "📌 Показать панель",
+  "btn_how": "🎮 Как играть",
+  "btn_rules": "📜 Правила",
+  "btn_commands": "📋 Команды",
+  "btn_language": "🌐 Язык",
+  "btn_back": "⬅️ Назад",
+
+  "btn_join": "✅ Вступить",
+  "btn_start": "▶️ Старт",
+  "btn_players": "👥 Игроки",
+  "btn_refresh": "🔄 Обновить",
+
+  "lang_choose": "🌐 <b>Выбери язык</b>:",
+  "lang_set": "✅ Язык обновлён.",
+
+  "toast_joined": "✅ Ты вступил",
+  "toast_already_joined": "🙂 Ты уже в игре",
+  "toast_full": "⚠️ Лобби заполнено",
+  "toast_owner_only": "⚠️ Только создатель",
+  "toast_need_three": "⚠️ Нужно минимум 3 игрока",
+  "toast_no_game": "⚠️ Нет активной игры. Нажми /newgame"
+}
