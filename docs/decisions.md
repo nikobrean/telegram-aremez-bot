@@ -1,71 +1,175 @@
-# Decisions (M1)
+# Aremes Bot — Architecture & Logic (Stage 1)
 
-This document records key technical decisions for version 1.0 (Classic Mode), milestone M1 (Lobby & Sessions).
+This document explains **how the Aremes Telegram bot works internally**,  
+why certain UX decisions were made, and how the lobby system is designed.
 
-## 1. Telegram framework
-**Decision:** Use `aiogram 3.x` (async) for the bot.
-**Why:** Modern Telegram bot framework, good async support, convenient routers/handlers.
-**Alternative:** python-telegram-bot. Chosen aiogram because the project already started with it and it fits async design.
+This is **Stage 1 (Lobby MVP)**.
 
-## 2. Project structure
-**Decision:** Separate Telegram/UI layer from game logic and storage.
+---
 
-- `bot.py` — Telegram entrypoint: dispatcher, routers, handlers, keyboards.
-- `game/` — game domain objects and rules (session, player, errors).
-- `storage/` — session storage implementation (in-memory for M1).
-- `docs/` — documentation (this file + later architecture and rules).
+## 🎯 Main goal
 
-**Why:** Makes code easier to test and reason about. Game rules can be developed independently from Telegram.
+Create a Telegram game bot that:
+- does NOT spam the chat
+- is easy to understand even for a child
+- works equally well in groups and private chats
+- supports multiple languages
+- can be extended later into a full game
 
-## 3. Public vs private data (future requirement)
-**Decision:** In Classic Mode, all public actions happen in group chat, private data must go to DM.
-**Current status:** In M1 we only implement lobby/session management. Private card DM logic is part of M2+.
-**Why:** Telegram group messages are visible to everyone, so private info must never be posted in the group.
+---
 
-## 4. State model (session)
-**Decision:** Use a `Session` as the main state object per game lobby.
-Session includes:
-- chat_id (group chat identifier)
-- join_code
-- list of players
-- status (lobby / started / finished) — in M1 mainly lobby
+## 🧱 Core design principles
 
-**Why:** It matches how the game works: one group chat = one game instance.
+### 1. One message — zero spam
+The bot always keeps **one main panel message** in each chat.
 
-## 5. Storage
-**Decision:** Use in-memory storage in M1 (dictionary in `storage/memory.py`).
-**Why:** Fast to implement, enough for learning and M1 requirements.
-**Trade-off:** If the bot restarts, sessions disappear.
-**Future:** Consider SQLite persistence in v2 (optional in SOW).
+Instead of sending new messages, the bot:
+- edits the existing panel
+- updates buttons and text dynamically
 
-## 6. Error handling
-**Decision:** Use custom exceptions for rule violations (e.g. "game not found", "already started", "not enough players").
-Handlers catch these exceptions and send a friendly message to the user.
+This keeps the chat clean and readable.
 
-**Why:** Keeps rule checks inside `game/` and keeps Telegram handlers clean.
+---
 
-## 7. UX: commands first, buttons later
-**Decision:** M1 supports commands for core actions. Inline buttons will be added as UX improvement after M1 is stable.
-**Why:** Commands are simplest and fastest to debug. Buttons require callbacks and more UI work.
+### 2. Everything through buttons
+Most interactions are done via **inline buttons**, not text commands.
 
-## 8. Security / secrets
-**Decision:** Store `BOT_TOKEN` in `.env` and never commit it to GitHub.
-**How:** `.env` is included in `.gitignore`.
-**Why:** Token gives full control over the bot, must not leak.
+Commands exist mainly for:
+- `/start`
+- `/newgame`
+- `/startgame`
+- `/help`
+- `/rules`
 
-## 9. Logging
-**Decision:** Print basic startup/log messages to console during development.
-**Why:** Helps debugging. Logs must never contain secrets.
+But the recommended way is using buttons.
 
-## 10. What is done in M1
-- Create a new lobby
-- Join with code
-- List players
-- Start session (basic state change)
-- Basic validation/errors
+---
 
-## 11. Next milestone (M2) preview
-- Create Case File (Suspect + Location + Item)
-- Shuffle + deal cards
-- DM `/hand` and enforce privacy
-- No duplicate cards, case file cards not in hands
+### 3. Simple UX (child-friendly)
+Every screen answers one question only:
+- What is happening?
+- What should I press next?
+
+No technical language, no hidden actions.
+
+---
+
+## 🌍 Language system (i18n)
+
+### How languages work
+- All texts are stored in `locales/*.json`
+- The code never contains hardcoded text
+- Language can be changed at any moment
+
+There are two independent language scopes:
+- **Group language** (per chat)
+- **Private language** (per user)
+
+---
+
+### Telegram command menu language
+Telegram normally ties command descriptions to the Telegram app language.
+
+This bot **overrides that behavior**:
+- When a user changes language inside the bot
+- Command descriptions are updated for **all Telegram language codes**
+- This guarantees consistency between bot UI and command descriptions
+
+---
+
+## 🧩 Project structure
+
+```text
+bot.py                 Main bot entry point
+locales/               All translations (JSON)
+game/
+  session.py           Game session & state logic
+  errors.py            Custom game exceptions
+storage/
+  memory.py            In-memory session storage
+docs/
+  ARCHITECTURE.md      This document
+```
+
+---
+
+## 🎲 Lobby system (Stage 1)
+
+### Lobby lifecycle
+1. No game exists → group shows **Home panel**
+2. Host presses **New game**
+3. Lobby is created
+4. Players press **Join**
+5. When there are 3–6 players → host presses **Start**
+
+---
+
+### Lobby rules
+- Minimum players: **3**
+- Maximum players: **6**
+- Only the host can start the game
+- A player cannot join twice
+- The lobby cannot be created twice in the same chat
+
+All violations are handled via **controlled errors**, not crashes.
+
+---
+
+## 🔄 Refresh button — why it exists
+
+The **Refresh** button does NOT affect the game logic.
+
+It only:
+- re-renders the lobby screen
+- helps if Telegram failed to update the message automatically
+
+The button is optional and safe to ignore if the screen looks correct.
+
+---
+
+## 🚫 No modal popups
+The bot intentionally avoids:
+- blocking alerts
+- modal confirmation windows
+- “OK” dialogs
+
+Instead, it uses:
+- top notifications (toast-style)
+- silent panel updates
+
+This keeps the experience smooth and fast.
+
+---
+
+## 🔐 Storage model
+
+Stage 1 uses **in-memory storage**:
+- All sessions are stored in RAM
+- If the bot restarts, sessions are lost
+
+This is intentional for MVP simplicity.
+
+Persistent storage (DB) can be added later.
+
+---
+
+## 🚀 Future stages (planned)
+
+- Stage 2: Full game logic
+- Stage 3: Roles & turns
+- Stage 4: Persistence (database)
+- Stage 5: Anti-cheat & moderation tools
+
+Stage 1 is designed to support all future stages without rewriting the core.
+
+---
+
+## ✅ Summary
+
+Stage 1 focuses on:
+- UX clarity
+- clean chats
+- simple logic
+- extensible architecture
+
+Everything else builds on top of this foundation.
