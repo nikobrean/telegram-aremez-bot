@@ -1,82 +1,193 @@
-# Telegram Clue Bot
+# Aremes Telegram Bot (Lobby MVP)
 
-Telegram bot for a multiplayer Clue-style game.  
-Built as an educational project in Python.
+Aremes is a Telegram game bot designed with **maximum simplicity** and **zero chat spam**.  
+The bot always keeps **one main panel message** in the chat and **edits it instead of sending new messages**.
 
-This project is developed step by step with a focus on clean architecture,
-game logic separation, and responsible use of AI tools.
-
----
-
-## Project Status
-
-- Current milestone: **M1 — Lobby & Sessions**
-- Status: **In progress / stable for M1**
-- Platform: Telegram groups
-
-At this stage, the project focuses on creating and managing game lobbies.
-Full game mechanics will be implemented in later milestones.
+The interface is intentionally simple so that **even a child can understand how to play**.
 
 ---
 
-## Features (M1)
+## 🌍 Languages
 
-- Create a new game lobby
-- Generate and share a join code
-- Join a lobby using the join code
-- List players in the lobby
-- Basic session validation and error handling
-- In-memory session storage
+The bot supports **three languages**:
 
----
+- English (default)
+- Русский
+- עברית
 
-## Planned Features
-
-- Card dealing and Case File generation
-- Private player hands via direct messages (DM)
-- Suggest and Accuse actions
-- Full Classic Mode game flow
-- Improved UX with inline buttons
-- Optional persistence (SQLite) in later versions
+The selected language:
+- changes **all texts in the bot**
+- changes **button labels**
+- changes **Telegram command descriptions**
+- can be changed **at any time**, both in private chats and in groups
 
 ---
 
-## Tech Stack
+## ✨ Features (Stage 1 / MVP)
 
-- **Python 3**
-- **aiogram 3.x**
-- **asyncio**
-- Telegram Bot API
+- 🎲 Create a game lobby in a group chat
+- ✅ Players can join the lobby
+- ▶️ Host can start the game
+- 👥 Minimum **3**, maximum **6** players
+- 🔄 Refresh button (only updates the screen)
+- 🌐 Language switch at any moment
+- ❓ Commands list inside the bot
+- 📜 Rules screen
+- 🚫 No spam: only one message is edited
 
 ---
 
-## Project Structure
+## 🔄 Refresh button (important)
 
-```text
-bot.py        - Telegram bot entrypoint (handlers, routers, startup)
-game/         - Game domain logic (sessions, rules, errors)
-storage/      - In-memory storage for game sessions
-docs/         - Project documentation and design decisions
+The **Refresh** button does **NOT** restart the game.
+
+It only:
+- updates the lobby screen
+- re-draws the list of players
+- helps if Telegram did not refresh the message automatically
+
+If everything looks correct, **you do not need to press Refresh**.
+
+---
+
+## 🤖 How the bot works (simple explanation)
+
+### In a group chat
+
+1. Add the bot to a group  
+2. Send `/start`  
+3. Press **🎲 New game**  
+4. Players press **✅ Join**  
+5. When there are **3–6 players**, the host presses **▶️ Start**
+
+The bot edits the same message instead of sending new ones.
+
+---
+
+### In a private chat
+
+- `/start` shows instructions
+- Only two buttons are available:
+  - 📜 Rules
+  - 🌐 Language
+
+No game actions are available in private chat.
+
+---
+
+## 🧠 Commands
+
+### Group chats
+- `/start` — show main panel  
+- `/newgame` — create a lobby  
+- `/startgame` — start the game (host only)  
+- `/help` — how to play  
+- `/rules` — game rules  
+
+### Private chat
+- `/start` — instructions  
+- `/help` — help  
+- `/rules` — rules  
+
+---
+
+## 🛠 Installation
+
+### Requirements
+- Python **3.10+**
+- **aiogram v3**
+- **python-dotenv**
+
+---
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/nikobrean/telegram-aremez-bot.git
+cd telegram-aremez-bot
 ```
-## How to Run Locally
 
-1. Clone the repository  
-2. Create a `.env` file in the project root  
-3. Add your Telegram bot token to `.env`:
+---
+
+### 2. Create virtual environment (recommended)
+```bash
+python -m venv .venv
+```
+
+**Windows**
+```bash
+.venv\Scripts\activate
+```
+
+**Mac / Linux**
+```bash
+source .venv/bin/activate
+```
+
+---
+
+### 3. Install dependencies
+```bash
+pip install aiogram python-dotenv
+```
+
+---
+
+### 4. Create `.env` file
+
+Create a file named `.env` in the project root:
 
 ```env
-BOT_TOKEN=your_bot_token_here
+BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
 ```
-4. Install dependencies
-5. Run the bot:
-```
+
+⚠️ **Never upload `.env` to GitHub.**
+
+---
+
+### 5. Run the bot
+```bash
 python bot.py
 ```
 
+If everything is correct, you will see:
 
-## Notes
-- The .env file is ignored by git and must not be committed
+```text
+✅ Bot is running: @YourBotName (id=...)
+```
 
-- In M1, all game state is stored in memory and will be lost on restart
+---
 
-- This project is intended as a learning and portfolio project
+## 📁 Project structure
+
+```text
+bot.py
+.env                (ignored by git)
+locales/
+  en.json
+  ru.json
+  he.json
+game/
+  session.py
+  errors.py
+storage/
+  memory.py
+```
+
+---
+
+## 🚀 GitHub upload (quick)
+
+```bash
+git add .
+git commit -m "Update bot logic and translations"
+git push
+```
+
+---
+
+## 📝 Notes
+
+- This repository contains **Stage 1 (Lobby MVP)** only  
+- Full game logic will be added later  
+- All texts and explanations are handled via **JSON localization files**  
+- The bot is designed to be **simple, clean, and non-intrusive**

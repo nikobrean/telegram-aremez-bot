@@ -1,5 +1,4 @@
 class GameError(Exception):
-    """Базовая ошибка игры."""
     pass
 
 
@@ -7,7 +6,7 @@ class SessionNotFound(GameError):
     pass
 
 
-class SessionAlreadyStarted(GameError):
+class SessionAlreadyExists(GameError):
     pass
 
 
@@ -19,9 +18,13 @@ class SessionFull(GameError):
     pass
 
 
+class NotOwner(GameError):
+    pass
+
+
 class NotEnoughPlayers(GameError):
     pass
 
 
-class NotOwner(GameError):
+class SessionAlreadyStarted(GameError):
     pass
