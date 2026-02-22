@@ -18,11 +18,13 @@
 
   "lobby_hint": "לחץ ✅ <b>Join</b>. הבעלים לוחץ ▶️ <b>Start</b> כשיש 3–6 שחקנים.\n\n🔄 <b>Refresh</b> רק מרענן את המסך.\nלא חובה ללחוץ אם הכול נראה תקין.",
 
-  "started_hint": "🚀 Game started (M1).",
+  "ingame_hint": "✅ <b>המשחק התחיל!</b>\n\nשלחתי לך את הקלפים בפרטי.\nאם לא קיבלת כלום — פתח את הבוט בפרטי ולחץ /start.\n\n🔄 Refresh רק מרענן את המסך.",
+
+  "started_hint": "🚀 Game started.",
 
   "help_text": "<b>עזרה</b>\n\n1) 🎲 New game\n2) ✅ Join\n3) ▶️ Start (host)\n\n🔄 Refresh מרענן את המסך אם Telegram לא עדכן.\nהודעה אחת — בלי ספאם.",
 
-  "rules_text": "<b>חוקים</b>\n\nM1: רק לובי.\nיצירה → הצטרפות → התחלה.\nהמשחק המלא בהמשך.",
+  "rules_text": "<b>חוקים</b>\n\nM2: הקלפים מחולקים. הפתרון מוסתר (דמות + נשק + מיקום).\nבהמשך: תורות והאשמות (M3).",
 
   "commands_text_group": "<b>פקודות (קבוצה)</b>\n\n/start — תפריט\n/newgame — יצירת לובי\n/startgame — התחלה (בעלים)\n/help — עזרה\n/rules — חוקים",
 
@@ -50,5 +52,10 @@
   "cmd_newgame_desc": "יצירת לובי משחק",
   "cmd_startgame_desc": "התחלה (בעלים בלבד)",
   "cmd_help_desc": "עזרה / איך לשחק",
-  "cmd_rules_desc": "חוקים"
+  "cmd_rules_desc": "חוקים",
+
+  "dm_cards_title": "🂠 הקלפים שלך:",
+  "dm_cards_footer": "\n\n<b>אל תשתף את הקלפים שלך.</b>",
+  "warn_cant_dm": "⚠️ לא הצלחתי לשלוח הודעה פרטית ל-<b>{n}</b> שחקן/ים.\nהם צריכים לפתוח את הבוט בפרטי וללחוץ /start.",
+  "start_game_exists_note": "✅ כבר יש משחק בצ'אט הזה. השתמש בכפתורים בפאנל."
 }

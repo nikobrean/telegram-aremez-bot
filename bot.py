@@ -2,24 +2,19 @@ import os
 import json
 import asyncio
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 from dotenv import load_dotenv
 
 from aiogram import Bot, Dispatcher, types
-from aiogram.client.default import DefaultBotProperties/
-
+from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, Command
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.exceptions import TelegramBadRequest
 
 from aiogram.types import BotCommand
-from aiogram.types import (
-    BotCommandScopeDefault,
-    BotCommandScopeAllPrivateChats,
-    BotCommandScopeAllGroupChats,
-)
+from aiogram.types import BotCommandScopeDefault, BotCommandScopeAllPrivateChats, BotCommandScopeAllGroupChats
 
 from storage.memory import InMemoryStorage
 from game.errors import (
@@ -32,8 +27,9 @@ from game.errors import (
     NotEnoughPlayers,
     SessionAlreadyStarted,
 )
-from game.session import GameState
+from game.session import SessionState
 
+# -------------------- ENV --------------------
 load_dotenv()
 TOKEN = os.getenv("BOT_TOKEN")
 if not TOKEN:
@@ -44,16 +40,16 @@ SUPPORTED_LANGS = ("en", "ru", "he")
 
 storage = InMemoryStorage()
 
-# one panel message per group chat and per private user
+# One panel per group chat and one panel per private user
 GROUP_PANEL_ID: Dict[int, int] = {}
 PRIVATE_PANEL_ID: Dict[int, int] = {}
 
-# language storage
+# Languages
 CHAT_LANG: Dict[int, str] = {}
 USER_LANG: Dict[int, str] = {}
 
 
-# ---------- i18n ----------
+# -------------------- i18n --------------------
 def load_tr() -> Dict[str, Dict[str, str]]:
     base = Path(__file__).parent / "locales"
     out: Dict[str, Dict[str, str]] = {}
@@ -104,7 +100,12 @@ def set_user_lang(uid: int, lang: str) -> str:
 
 async def safe_edit(bot: Bot, chat_id: int, message_id: int, text: str, kb: InlineKeyboardMarkup) -> None:
     try:
-        await bot.edit_message_text(chat_id=chat_id, message_id=message_id, text=text, reply_markup=kb)
+        await bot.edit_message_text(
+            chat_id=chat_id,
+            message_id=message_id,
+            text=text,
+            reply_markup=kb,
+        )
     except TelegramBadRequest:
         # includes "message is not modified"
         pass
@@ -125,8 +126,8 @@ async def toast(call: types.CallbackQuery, text: str) -> None:
         pass
 
 
-# ---------- Telegram Menu commands (NO /players) ----------
-def build_commands_group(lang: str):
+# -------------------- Telegram menu commands --------------------
+def build_commands_group(lang: str) -> List[BotCommand]:
     return [
         BotCommand(command="start", description=t(lang, "cmd_start_desc")),
         BotCommand(command="newgame", description=t(lang, "cmd_newgame_desc")),
@@ -136,7 +137,7 @@ def build_commands_group(lang: str):
     ]
 
 
-def build_commands_private(lang: str):
+def build_commands_private(lang: str) -> List[BotCommand]:
     return [
         BotCommand(command="start", description=t(lang, "cmd_start_desc")),
         BotCommand(command="help", description=t(lang, "cmd_help_desc")),
@@ -144,10 +145,10 @@ def build_commands_private(lang: str):
     ]
 
 
-async def apply_telegram_commands(bot: Bot, chosen_lang: str):
+async def apply_telegram_commands(bot: Bot, chosen_lang: str) -> None:
     """
-    Telegram Menu follows language chosen INSIDE the bot, not Telegram app language:
-    set for en/ru/he all the same chosen language.
+    Force command descriptions to follow bot-selected language, not Telegram app language:
+    set same chosen_lang for all language_code (en/ru/he).
     """
     chosen_lang = chosen_lang if chosen_lang in SUPPORTED_LANGS else DEFAULT_LANG
 
@@ -163,7 +164,6 @@ async def apply_telegram_commands(bot: Bot, chosen_lang: str):
             language_code=lc,
         )
 
-    # default fallback: minimal
     await bot.set_my_commands(
         build_commands_private(chosen_lang),
         scope=BotCommandScopeDefault(),
@@ -171,7 +171,7 @@ async def apply_telegram_commands(bot: Bot, chosen_lang: str):
     )
 
 
-# ---------- Keyboards ----------
+# -------------------- Keyboards --------------------
 def kb_group_home(lang: str) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=t(lang, "btn_newgame"), callback_data="home:newgame")],
@@ -200,8 +200,22 @@ def kb_group_lobby(lang: str) -> InlineKeyboardMarkup:
     ])
 
 
+def kb_group_ingame(lang: str) -> InlineKeyboardMarkup:
+    # M2: in game — no join/start, just refresh + rules + language + commands
+    return InlineKeyboardMarkup(inline_keyboard=[
+        [
+            InlineKeyboardButton(text=t(lang, "btn_refresh"), callback_data="lobby:refresh"),
+            InlineKeyboardButton(text=t(lang, "btn_language"), callback_data="menu:group:lang"),
+        ],
+        [
+            InlineKeyboardButton(text=t(lang, "btn_commands"), callback_data="menu:group:commands"),
+            InlineKeyboardButton(text=t(lang, "btn_rules"), callback_data="menu:group:rules"),
+        ],
+    ])
+
+
 def kb_private_menu(lang: str) -> InlineKeyboardMarkup:
-    # ONLY 2 buttons in private: Rules + Language
+    # Only two buttons in private: Rules + Language
     return InlineKeyboardMarkup(inline_keyboard=[
         [InlineKeyboardButton(text=t(lang, "btn_rules"), callback_data="menu:pm:rules")],
         [InlineKeyboardButton(text=t(lang, "btn_language"), callback_data="menu:pm:lang")],
@@ -225,7 +239,7 @@ def kb_back(lang: str, scope: str) -> InlineKeyboardMarkup:
     ])
 
 
-# ---------- Panel rendering ----------
+# -------------------- Rendering --------------------
 def render_group_home(chat_id: int) -> str:
     lang = get_chat_lang(chat_id)
     return t(lang, "group_home_text")
@@ -239,10 +253,17 @@ def render_lobby(chat_id: int) -> str:
     lines.append(t(lang, "lobby_status", state=str(s.state.value)))
     lines.append("")
     lines.append(t(lang, "lobby_players", n=len(s.players), maxn=s.max_players))
-    for i, p in enumerate(s.players.values(), start=1):
-        lines.append(f"{i}) {p.name}")
+    for i, p in enumerate(s.players, start=1):
+        lines.append(f"{i}) {p.username}")
     lines.append("")
-    lines.append(t(lang, "lobby_hint") if s.state == GameState.LOBBY else t(lang, "started_hint"))
+
+    if s.state == SessionState.LOBBY:
+        lines.append(t(lang, "lobby_hint"))
+    elif s.state == SessionState.IN_GAME:
+        lines.append(t(lang, "ingame_hint"))
+    else:
+        lines.append(t(lang, "started_hint"))
+
     return "\n".join(lines)
 
 
@@ -250,8 +271,9 @@ async def show_group_panel(bot: Bot, chat_id: int) -> None:
     lang = get_chat_lang(chat_id)
 
     if storage.has_session(chat_id):
+        s = storage.get_by_chat(chat_id)
         text = render_lobby(chat_id)
-        kb = kb_group_lobby(lang)
+        kb = kb_group_lobby(lang) if s.state == SessionState.LOBBY else kb_group_ingame(lang)
     else:
         text = render_group_home(chat_id)
         kb = kb_group_home(lang)
@@ -295,6 +317,7 @@ def err_msg(lang: str, e: Exception) -> str:
     return t(lang, "err_default")
 
 
+# -------------------- Main --------------------
 async def main() -> None:
     bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher()
@@ -302,21 +325,33 @@ async def main() -> None:
     me = await bot.get_me()
     print(f"✅ Bot is running: @{me.username} (id={me.id})")
 
-    # default EN menu
+    # Default EN on boot
     await apply_telegram_commands(bot, DEFAULT_LANG)
 
-    # ----- commands -----
+    # -------------------- Commands --------------------
     @dp.message(CommandStart())
     async def cmd_start(message: types.Message):
+        # GROUP
         if is_group(message.chat):
-            set_chat_lang(message.chat.id, get_chat_lang(message.chat.id))
+            lang = get_chat_lang(message.chat.id)
+
+            # Always show/refresh panel
             await show_group_panel(bot, message.chat.id)
+
+            # If game exists -> short message (localized) + auto delete
+            if storage.has_session(message.chat.id):
+                note = await message.answer(t(lang, "start_game_exists_note"))
+                await asyncio.sleep(2)
+                await try_delete(note)
+
             await try_delete(message)
             return
 
+        # PRIVATE
         if message.from_user:
-            set_user_lang(message.from_user.id, get_user_lang(message.from_user.id))
-            await show_private_panel(bot, message.from_user.id, message.chat.id)
+            uid = message.from_user.id
+            set_user_lang(uid, get_user_lang(uid))
+            await show_private_panel(bot, uid, message.chat.id)
 
     @dp.message(Command("help"))
     async def cmd_help(message: types.Message):
@@ -365,8 +400,8 @@ async def main() -> None:
 
         lang = get_chat_lang(message.chat.id)
         try:
-            s = storage.create_session(message.chat.id, message.from_user.id, lang=lang)
-            s.add_player(message.from_user.id, safe_name(message.from_user))
+            s = storage.create_session(message.chat.id, message.from_user.id)
+            s.add_player(message.from_user.id, message.from_user.username)
             await show_group_panel(bot, message.chat.id)
         except GameError as e:
             await show_group_panel(bot, message.chat.id)
@@ -387,7 +422,29 @@ async def main() -> None:
         try:
             s = storage.get_by_chat(message.chat.id)
             s.start(message.from_user.id)
+
+            # M2: send cards to each player in private (localized)
+            failed = 0
+            for p in s.players:
+                cards = s.hands.get(p.telegram_id, [])
+                dm_text = (
+                    f"{t(lang, 'dm_cards_title')}\n"
+                    + "\n".join(f"• {c}" for c in cards)
+                    + t(lang, "dm_cards_footer")
+                )
+                try:
+                    await bot.send_message(p.telegram_id, dm_text)
+                except Exception:
+                    failed += 1
+
             await show_group_panel(bot, message.chat.id)
+
+            if failed > 0:
+                warn = t(lang, "warn_cant_dm", n=failed)
+                note = await message.answer(warn)
+                await asyncio.sleep(4)
+                await try_delete(note)
+
         except GameError as e:
             await show_group_panel(bot, message.chat.id)
             mid = GROUP_PANEL_ID.get(message.chat.id)
@@ -396,7 +453,7 @@ async def main() -> None:
 
         await try_delete(message)
 
-    # ----- callbacks -----
+    # -------------------- Callbacks --------------------
     @dp.callback_query()
     async def cb(call: types.CallbackQuery):
         if not call.message:
@@ -411,10 +468,9 @@ async def main() -> None:
 
             if data == "home:newgame":
                 try:
-                    s = storage.create_session(chat_id, call.from_user.id, lang=lang)
-                    s.add_player(call.from_user.id, safe_name(call.from_user))
+                    s = storage.create_session(chat_id, call.from_user.id)
+                    s.add_player(call.from_user.id, call.from_user.username)
                     await show_group_panel(bot, chat_id)
-                    # ✅ top toast ONLY for create lobby
                     await toast(call, t(lang, "toast_created"))
                 except GameError as e:
                     await toast(call, "⚠️ " + err_msg(lang, e))
@@ -428,7 +484,7 @@ async def main() -> None:
             if data == "lobby:join":
                 try:
                     s = storage.get_by_chat(chat_id)
-                    s.add_player(call.from_user.id, safe_name(call.from_user))
+                    s.add_player(call.from_user.id, call.from_user.username)
                     await show_group_panel(bot, chat_id)
                     await toast(call, t(lang, "toast_joined"))
                 except PlayerAlreadyJoined:
@@ -441,8 +497,30 @@ async def main() -> None:
                 try:
                     s = storage.get_by_chat(chat_id)
                     s.start(call.from_user.id)
+
+                    # M2: send cards to each player in private (localized)
+                    failed = 0
+                    for p in s.players:
+                        cards = s.hands.get(p.telegram_id, [])
+                        dm_text = (
+                            f"{t(lang, 'dm_cards_title')}\n"
+                            + "\n".join(f"• {c}" for c in cards)
+                            + t(lang, "dm_cards_footer")
+                        )
+                        try:
+                            await bot.send_message(p.telegram_id, dm_text)
+                        except Exception:
+                            failed += 1
+
                     await show_group_panel(bot, chat_id)
                     await toast(call, t(lang, "toast_started"))
+
+                    if failed > 0:
+                        warn = t(lang, "warn_cant_dm", n=failed)
+                        note = await call.message.answer(warn)
+                        await asyncio.sleep(4)
+                        await try_delete(note)
+
                 except NotEnoughPlayers:
                     await toast(call, t(lang, "toast_need3"))
                 except GameError as e:
@@ -470,7 +548,6 @@ async def main() -> None:
                 set_chat_lang(chat_id, new_lang)
                 await apply_telegram_commands(bot, new_lang)
                 await show_group_panel(bot, chat_id)
-                # optional toast for language change (top)
                 await toast(call, t(new_lang, "toast_lang_set"))
                 return
 
@@ -485,7 +562,6 @@ async def main() -> None:
             return
 
         if data == "menu:pm:lang":
-
             await safe_edit(bot, chat_id, call.message.message_id, t(lang, "lang_choose"), kb_lang(lang, "pm"))
             return
 

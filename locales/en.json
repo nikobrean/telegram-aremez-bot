@@ -18,11 +18,13 @@
 
   "lobby_hint": "Tap ✅ <b>Join</b>. Host taps ▶️ <b>Start</b> when 3–6 players.\n\n🔄 <b>Refresh</b> only updates this screen.\nYou don’t need it if everything looks correct.",
 
-  "started_hint": "🚀 Game started (M1).",
+  "ingame_hint": "✅ <b>Game started!</b>\n\nI sent your cards in private.\nIf you didn't receive anything — open the bot in private and press /start.\n\n🔄 Refresh only updates this screen.",
+
+  "started_hint": "🚀 Game started.",
 
   "help_text": "<b>Help</b>\n\n1) 🎲 New game\n2) ✅ Join\n3) ▶️ Start (host)\n\n🔄 Refresh only updates the screen if Telegram didn’t refresh.\nOne screen — no spam.",
 
-  "rules_text": "<b>Rules</b>\n\nM1: Lobby only.\nCreate game → Join → Start.\nFull game later.",
+  "rules_text": "<b>Rules</b>\n\nM2: Cards are dealt. The solution is hidden (character + weapon + location).\nLater: turns and accusations (M3).",
 
   "commands_text_group": "<b>Commands (group)</b>\n\n/start — Menu\n/newgame — Create lobby\n/startgame — Start (host)\n/help — Help\n/rules — Rules",
 
@@ -50,5 +52,10 @@
   "cmd_newgame_desc": "Create game lobby",
   "cmd_startgame_desc": "Start (host only)",
   "cmd_help_desc": "Help / How to play",
-  "cmd_rules_desc": "Rules"
+  "cmd_rules_desc": "Rules",
+
+  "dm_cards_title": "🂠 Your cards:",
+  "dm_cards_footer": "\n\n<b>Do not share your cards.</b>",
+  "warn_cant_dm": "⚠️ I couldn't DM <b>{n}</b> player(s).\nThey must open the bot in private and press /start.",
+  "start_game_exists_note": "✅ A game already exists in this chat. Use the panel buttons."
 }
