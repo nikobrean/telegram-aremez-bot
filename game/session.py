@@ -1,23 +1,18 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
 from typing import Dict, List, Optional, Tuple
 import random
 
 from .player import Player
-from .errors import (
-    PlayerAlreadyJoined,
-    SessionAlreadyStarted,
-    SessionFull,
-    NotEnoughPlayers,
-    NotOwner,
-)
+from .errors import PlayerAlreadyJoined, SessionFull, NotEnoughPlayers, NotOwner, SessionAlreadyStarted
 
 
-class SessionState(str, Enum):
-    LOBBY = "LOBBY"
-    IN_GAME = "IN_GAME"
-    FINISHED = "FINISHED"
+def default_cards() -> Tuple[List[str], List[str], List[str]]:
+    # Заглушки — потом заменишь на реальные
+    characters = [f"character_{i}" for i in range(1, 7)]   # 6
+    weapons = [f"weapon_{i}" for i in range(1, 7)]         # 6
+    locations = [f"location_{i}" for i in range(1, 10)]    # 9
+    return characters, weapons, locations
 
 
 def normalize_username(username: Optional[str], user_id: int) -> str:
@@ -26,26 +21,18 @@ def normalize_username(username: Optional[str], user_id: int) -> str:
     return f"user_{user_id}"
 
 
-def default_cards() -> Tuple[List[str], List[str], List[str]]:
-    # Заглушки (потом заменишь на реальные)
-    characters = [f"character_{i}" for i in range(1, 7)]   # 6
-    weapons = [f"weapon_{i}" for i in range(1, 7)]         # 6
-    locations = [f"location_{i}" for i in range(1, 10)]    # 9
-    return characters, weapons, locations
-
-
 @dataclass
 class GameSession:
     code: str
-    chat_id: int
     owner_id: int
     created_at: datetime = field(default_factory=datetime.utcnow)
 
-    state: SessionState = SessionState.LOBBY
-    players: List[Player] = field(default_factory=list)
-
-    min_players: int = 1
+    # Lobby rules
+    min_players: int = 3
     max_players: int = 6
+
+    players: List[Player] = field(default_factory=list)
+    started: bool = False
 
     # M2: solution + hands
     solution_character: Optional[str] = None
@@ -53,6 +40,7 @@ class GameSession:
     solution_location: Optional[str] = None
     hands: Dict[int, List[str]] = field(default_factory=dict)
 
+    # Card pools
     characters: List[str] = field(default_factory=list)
     weapons: List[str] = field(default_factory=list)
     locations: List[str] = field(default_factory=list)
@@ -64,23 +52,21 @@ class GameSession:
             self.weapons = w
             self.locations = l
 
-    def add_player(self, telegram_id: int, username: Optional[str]) -> Player:
-        if self.state != SessionState.LOBBY:
-            raise SessionAlreadyStarted("The game has already started. You cannot join now.")
+    def add_player(self, telegram_id: int, username: Optional[str]) -> None:
+        if self.started:
+            raise SessionAlreadyStarted("Game has already started.")
 
         if any(p.telegram_id == telegram_id for p in self.players):
-            raise PlayerAlreadyJoined("You are already in the lobby.")
+            raise PlayerAlreadyJoined("Already joined.")
 
         if len(self.players) >= self.max_players:
-            raise SessionFull(f"The lobby is full (max {self.max_players}).")
+            raise SessionFull("Lobby is full.")
 
-        player = Player(
+        self.players.append(Player(
             telegram_id=telegram_id,
             username=normalize_username(username, telegram_id),
             joined_at=datetime.utcnow(),
-        )
-        self.players.append(player)
-        return player
+        ))
 
     def deal_cards(self) -> None:
         self.ensure_cards_loaded()
@@ -108,13 +94,10 @@ class GameSession:
 
     def start(self, requester_id: int) -> None:
         if requester_id != self.owner_id:
-            raise NotOwner("Only the lobby owner can start the game.")
-
-        if self.state != SessionState.LOBBY:
-            raise SessionAlreadyStarted("Game has already started.")
-
+            raise NotOwner("Only owner can start.")
+        if self.started:
+            raise SessionAlreadyStarted("Already started.")
         if len(self.players) < self.min_players:
-            raise NotEnoughPlayers(f"At least {self.min_players} players are required to start.")
-
+            raise NotEnoughPlayers("Not enough players.")
         self.deal_cards()
-        self.state = SessionState.IN_GAME
+        self.started = True

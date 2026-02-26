@@ -1,61 +1,57 @@
 {
   "btn_newgame": "🎲 New game",
-  "btn_join": "✅ Join",
   "btn_start": "▶️ Start",
   "btn_refresh": "🔄 Refresh",
   "btn_language": "🌐 Language",
-  "btn_commands": "❓ Commands",
   "btn_rules": "📜 Rules",
   "btn_back": "⬅️ Back",
+  "btn_join_game": "✅ Join game",
+  "btn_invite": "📨 Invite link",
+  "btn_end": "🛑 Finish game",
 
-  "group_home_text": "👋 <b>Hello!</b>\n\nPress 🎲 <b>New game</b>.\nThen players press ✅ <b>Join</b>.\nHost presses ▶️ <b>Start</b> when 3–6 players.\n\nI don’t spam — I edit one message.",
+  "private_start_text": "👋 <b>Hi!</b>\n\n<b>How to start (super easy):</b>\n1) Press 🎲 <b>New game</b>\n2) Forward the invite message to friends\n3) Friends press ✅ <b>Join game</b>\n4) When <b>3–6</b> players joined, press ▶️ <b>Start</b>\n\n🌐 You can change language anytime.",
 
-  "private_start_text": "👋 <b>Hi!</b>\n\n<b>How to play (kid-easy):</b>\n1) Add me to a <b>group</b>\n2) In the group press 🎲 <b>New game</b>\n3) Players press ✅ <b>Join</b>\n4) Host presses ▶️ <b>Start</b> when 3–6 players\n\nYou can change 🌐 Language anytime.",
+  "invite_text": "🎲 <b>Game invite</b>\n\n<b>Forward this message</b> to your friends.\nThey should press ✅ <b>Join game</b> to enter the lobby.",
 
-  "lobby_title": "🎲 <b>Aremes</b>",
-  "lobby_status": "🟢 <b>Status:</b> {state}",
-  "lobby_players": "👥 <b>Players:</b> {n}/{maxn}",
+  "lobby_empty": "(no players yet)",
 
-  "lobby_hint": "Tap ✅ <b>Join</b>. Host taps ▶️ <b>Start</b> when 3–6 players.\n\n🔄 <b>Refresh</b> only updates this screen.\nYou don’t need it if everything looks correct.",
+  "host_lobby_text": "🎲 <b>Lobby</b>\n\n👥 <b>Players:</b> {n}/{maxp}\n✅ <b>To start you need:</b> {minp}–{maxp} players\n\n{players}\n\n📨 Send the invite link to friends.\nWhen ready, press ▶️ <b>Start</b>.",
 
-  "ingame_hint": "✅ <b>Game started!</b>\n\nI sent your cards in private.\nIf you didn't receive anything — open the bot in private and press /start.\n\n🔄 Refresh only updates this screen.",
+  "host_ingame_text": "✅ <b>Game started</b>\n\n👥 <b>Players:</b> {n}/{maxp}\n\n{players}\n\nI sent cards in private.",
 
-  "started_hint": "🚀 Game started.",
+  "player_wait_text": "🎲 <b>You joined the lobby</b>\n\nNow just wait — the host will press ▶️ <b>Start</b>.",
+  "player_wait_text_started": "✅ <b>Game started</b>\n\nCheck your private messages — your cards are there.",
 
-  "help_text": "<b>Help</b>\n\n1) 🎲 New game\n2) ✅ Join\n3) ▶️ Start (host)\n\n🔄 Refresh only updates the screen if Telegram didn’t refresh.\nOne screen — no spam.",
+  "help_text": "<b>Help</b>\n\n/newgame — create invite\nFriends press Join game\n/startgame — start (host)\n\nThe bot edits panels (no spam).",
 
-  "rules_text": "<b>Rules</b>\n\nM2: Cards are dealt. The solution is hidden (character + weapon + location).\nLater: turns and accusations (M3).",
-
-  "commands_text_group": "<b>Commands (group)</b>\n\n/start — Menu\n/newgame — Create lobby\n/startgame — Start (host)\n/help — Help\n/rules — Rules",
+  "rules_text": "<b>Rules</b>\n\nM2: Cards are dealt.\nSolution is hidden: character + weapon + location.\nNext (M3): turns and accusations.",
 
   "lang_choose": "<b>Choose language</b>:",
-  "only_group_cmd": "This command works only in group chats.",
 
   "toast_created": "Lobby created",
+  "toast_invite_sent": "Invite sent",
   "toast_refreshed": "Updated",
   "toast_joined": "Joined!",
-  "toast_already_joined": "You are already in the lobby",
   "toast_started": "Started!",
-  "toast_need3": "Need at least 3 players",
   "toast_lang_set": "Language updated",
+  "toast_ended": "Game finished",
 
-  "err_no_game": "No active game. Press 🎲 New game.",
-  "err_game_exists": "Game already exists in this chat.",
+  "err_owner_has_game": "You already have an active game. Finish it first.",
+  "err_no_game": "No active game.",
+  "err_already_in_session": "You are already in a game.",
   "err_already_joined": "You already joined.",
-  "err_full": "Lobby is full.",
-  "err_not_owner": "Only host can start.",
-  "err_need3": "Need at least 3 players.",
+  "err_not_owner": "Only host can do this.",
+  "err_need_players": "Not enough players to start.",
   "err_started": "Game already started.",
   "err_default": "Something went wrong.",
 
   "cmd_start_desc": "Menu / Instruction",
-  "cmd_newgame_desc": "Create game lobby",
+  "cmd_newgame_desc": "Create invite lobby",
   "cmd_startgame_desc": "Start (host only)",
   "cmd_help_desc": "Help / How to play",
   "cmd_rules_desc": "Rules",
 
   "dm_cards_title": "🂠 Your cards:",
   "dm_cards_footer": "\n\n<b>Do not share your cards.</b>",
-  "warn_cant_dm": "⚠️ I couldn't DM <b>{n}</b> player(s).\nThey must open the bot in private and press /start.",
-  "start_game_exists_note": "✅ A game already exists in this chat. Use the panel buttons."
+  "warn_cant_dm": "⚠️ I couldn't DM <b>{n}</b> player(s).\nThey must open the bot in private and press /start."
 }

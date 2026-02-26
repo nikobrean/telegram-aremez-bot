@@ -1,61 +1,57 @@
 {
-  "btn_newgame": "🎲 New game",
-  "btn_join": "✅ Join",
-  "btn_start": "▶️ Start",
-  "btn_refresh": "🔄 Refresh",
-  "btn_language": "🌐 Language",
-  "btn_commands": "❓ Commands",
-  "btn_rules": "📜 Rules",
-  "btn_back": "⬅️ Back",
+  "btn_newgame": "🎲 משחק חדש",
+  "btn_start": "▶️ התחל",
+  "btn_refresh": "🔄 רענן",
+  "btn_language": "🌐 שפה",
+  "btn_rules": "📜 חוקים",
+  "btn_back": "⬅️ חזרה",
+  "btn_join_game": "✅ הצטרף למשחק",
+  "btn_invite": "📨 קישור הזמנה",
+  "btn_end": "🛑 סיים משחק",
 
-  "group_home_text": "👋 <b>שלום!</b>\n\nלחץ 🎲 <b>New game</b>.\nאחר כך שחקנים לוחצים ✅ <b>Join</b>.\nהבעלים לוחץ ▶️ <b>Start</b> כשיש 3–6 שחקנים.\n\nאין ספאם — הודעה אחת נערכת.",
+  "private_start_text": "👋 <b>היי!</b>\n\n<b>איך מתחילים (ממש פשוט):</b>\n1) לחץ 🎲 <b>משחק חדש</b>\n2) העבר את הודעת ההזמנה לחברים\n3) חברים לוחצים ✅ <b>הצטרף למשחק</b>\n4) כשיש <b>3–6</b> שחקנים בלובי — לחץ ▶️ <b>התחל</b>\n\n🌐 אפשר לשנות שפה תמיד.",
 
-  "private_start_text": "👋 <b>היי!</b>\n\n<b>איך משחקים (פשוט לילד):</b>\n1) הוסף אותי ל<b>קבוצה</b>\n2) בקבוצה לחץ 🎲 <b>New game</b>\n3) שחקנים לוחצים ✅ <b>Join</b>\n4) הבעלים לוחץ ▶️ <b>Start</b> כשיש 3–6 שחקנים\n\nאפשר לשנות שפה תמיד.",
+  "invite_text": "🎲 <b>הזמנה למשחק</b>\n\n<b>העבר את ההודעה הזו</b> לחברים.\nהם צריכים ללחוץ ✅ <b>הצטרף למשחק</b> כדי להיכנס ללובי.",
 
-  "lobby_title": "🎲 <b>Aremes</b>",
-  "lobby_status": "🟢 <b>Status:</b> {state}",
-  "lobby_players": "👥 <b>Players:</b> {n}/{maxn}",
+  "lobby_empty": "(אין שחקנים עדיין)",
 
-  "lobby_hint": "לחץ ✅ <b>Join</b>. הבעלים לוחץ ▶️ <b>Start</b> כשיש 3–6 שחקנים.\n\n🔄 <b>Refresh</b> רק מרענן את המסך.\nלא חובה ללחוץ אם הכול נראה תקין.",
+  "host_lobby_text": "🎲 <b>לובי</b>\n\n👥 <b>שחקנים:</b> {n}/{maxp}\n✅ <b>כדי להתחיל צריך:</b> {minp}–{maxp} שחקנים\n\n{players}\n\n📨 שלח קישור הזמנה לחברים.\nכשתהיה מוכן — לחץ ▶️ <b>התחל</b>.",
 
-  "ingame_hint": "✅ <b>המשחק התחיל!</b>\n\nשלחתי לך את הקלפים בפרטי.\nאם לא קיבלת כלום — פתח את הבוט בפרטי ולחץ /start.\n\n🔄 Refresh רק מרענן את המסך.",
+  "host_ingame_text": "✅ <b>המשחק התחיל</b>\n\n👥 <b>שחקנים:</b> {n}/{maxp}\n\n{players}\n\nשלחתי קלפים בפרטי.",
 
-  "started_hint": "🚀 Game started.",
+  "player_wait_text": "🎲 <b>הצטרפת ללובי</b>\n\nחכה — המארח ילחץ ▶️ <b>התחל</b>.",
+  "player_wait_text_started": "✅ <b>המשחק התחיל</b>\n\nבדוק הודעות פרטיות — הקלפים שלך שם.",
 
-  "help_text": "<b>עזרה</b>\n\n1) 🎲 New game\n2) ✅ Join\n3) ▶️ Start (host)\n\n🔄 Refresh מרענן את המסך אם Telegram לא עדכן.\nהודעה אחת — בלי ספאם.",
+  "help_text": "<b>עזרה</b>\n\n/newgame — יצירת הזמנה\nחברים לוחצים הצטרף למשחק\n/startgame — התחלה (מארח)\n\nהבוט לא עושה ספאם (פאנל אחד).",
 
-  "rules_text": "<b>חוקים</b>\n\nM2: הקלפים מחולקים. הפתרון מוסתר (דמות + נשק + מיקום).\nבהמשך: תורות והאשמות (M3).",
-
-  "commands_text_group": "<b>פקודות (קבוצה)</b>\n\n/start — תפריט\n/newgame — יצירת לובי\n/startgame — התחלה (בעלים)\n/help — עזרה\n/rules — חוקים",
+  "rules_text": "<b>חוקים</b>\n\nM2: מחלקים קלפים.\nהפתרון מוסתר: דמות + נשק + מיקום.\nבהמשך (M3): תורות והאשמות.",
 
   "lang_choose": "<b>בחר שפה</b>:",
-  "only_group_cmd": "הפקודה הזו עובדת רק בקבוצות.",
 
   "toast_created": "הלובי נוצר",
+  "toast_invite_sent": "ההזמנה נשלחה",
   "toast_refreshed": "עודכן",
   "toast_joined": "הצטרפת!",
-  "toast_already_joined": "אתה כבר בלובי",
   "toast_started": "התחיל!",
-  "toast_need3": "צריך לפחות 3 שחקנים",
   "toast_lang_set": "השפה עודכנה",
+  "toast_ended": "המשחק הסתיים",
 
-  "err_no_game": "אין משחק פעיל. לחץ 🎲 New game.",
-  "err_game_exists": "כבר יש משחק בצ'אט הזה.",
+  "err_owner_has_game": "כבר יש לך משחק פעיל. קודם סיים אותו.",
+  "err_no_game": "אין משחק פעיל.",
+  "err_already_in_session": "אתה כבר במשחק.",
   "err_already_joined": "כבר הצטרפת.",
-  "err_full": "הלובי מלא.",
-  "err_not_owner": "רק הבעלים יכול להתחיל.",
-  "err_need3": "צריך לפחות 3 שחקנים.",
+  "err_not_owner": "רק המארח יכול לעשות זאת.",
+  "err_need_players": "אין מספיק שחקנים להתחיל.",
   "err_started": "המשחק כבר התחיל.",
   "err_default": "משהו השתבש.",
 
   "cmd_start_desc": "תפריט / הוראות",
-  "cmd_newgame_desc": "יצירת לובי משחק",
-  "cmd_startgame_desc": "התחלה (בעלים בלבד)",
-  "cmd_help_desc": "עזרה / איך לשחק",
+  "cmd_newgame_desc": "צור לובי הזמנה",
+  "cmd_startgame_desc": "התחל (מארח)",
+  "cmd_help_desc": "עזרה",
   "cmd_rules_desc": "חוקים",
 
   "dm_cards_title": "🂠 הקלפים שלך:",
   "dm_cards_footer": "\n\n<b>אל תשתף את הקלפים שלך.</b>",
-  "warn_cant_dm": "⚠️ לא הצלחתי לשלוח הודעה פרטית ל-<b>{n}</b> שחקן/ים.\nהם צריכים לפתוח את הבוט בפרטי וללחוץ /start.",
-  "start_game_exists_note": "✅ כבר יש משחק בצ'אט הזה. השתמש בכפתורים בפאנל."
+  "warn_cant_dm": "⚠️ לא הצלחתי לשלוח הודעה פרטית ל-<b>{n}</b> שחקן/ים.\nהם צריכים לפתוח את הבוט בפרטי וללחוץ /start."
 }

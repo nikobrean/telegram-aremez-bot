@@ -10,6 +10,10 @@ class SessionAlreadyExists(GameError):
     pass
 
 
+class AlreadyInSession(GameError):
+    pass
+
+
 class PlayerAlreadyJoined(GameError):
     pass
 
