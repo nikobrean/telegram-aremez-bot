@@ -1,193 +1,98 @@
-# Aremes Telegram Bot (Lobby MVP)
+# 🎲 Aremes Telegram Bot
 
-Aremes is a Telegram game bot designed with **maximum simplicity** and **zero chat spam**.  
-The bot always keeps **one main panel message** in the chat and **edits it instead of sending new messages**.
+Aremes is a Telegram game bot inspired by **deduction games**.
+The goal is to understand **who did what, where, and with what**, using logic and accusations.
 
-The interface is intentionally simple so that **even a child can understand how to play**.
+The bot is designed with:
+- **Zero chat spam**
+- **One interactive panel per user**
+- **Private game control**
+- **Multi-language support**
+
+Even a child can understand how to start a game.
 
 ---
 
 ## 🌍 Languages
 
-The bot supports **three languages**:
-
+Supported languages:
 - English (default)
 - Русский
 - עברית
 
-The selected language:
-- changes **all texts in the bot**
-- changes **button labels**
-- changes **Telegram command descriptions**
-- can be changed **at any time**, both in private chats and in groups
+Language affects:
+- all texts
+- buttons
+- command descriptions
+- notifications
+
+Language can be changed **at any moment**.
 
 ---
 
-## ✨ Features (Stage 1 / MVP)
+## 🧩 Game Concept (MVP → M2)
 
-- 🎲 Create a game lobby in a group chat
-- ✅ Players can join the lobby
-- ▶️ Host can start the game
-- 👥 Minimum **3**, maximum **6** players
-- 🔄 Refresh button (only updates the screen)
-- 🌐 Language switch at any moment
-- ❓ Commands list inside the bot
-- 📜 Rules screen
-- 🚫 No spam: only one message is edited
+- One player creates a game (host)
+- Host sends an invite message to friends
+- Friends join via **Join game** button
+- Game starts when enough players joined
+- Cards are sent **privately** to each player
+
+No groups are required.
 
 ---
 
-## 🔄 Refresh button (important)
+## ✨ Features
 
-The **Refresh** button does **NOT** restart the game.
+### Stage M1 (Lobby)
+- Create a private lobby
+- Invite players with one message
+- Join via button
+- Start game
+- Refresh lobby
+- Finish game
+- No spam (panel is edited)
 
-It only:
-- updates the lobby screen
-- re-draws the list of players
-- helps if Telegram did not refresh the message automatically
-
-If everything looks correct, **you do not need to press Refresh**.
-
----
-
-## 🤖 How the bot works (simple explanation)
-
-### In a group chat
-
-1. Add the bot to a group  
-2. Send `/start`  
-3. Press **🎲 New game**  
-4. Players press **✅ Join**  
-5. When there are **3–6 players**, the host presses **▶️ Start**
-
-The bot edits the same message instead of sending new ones.
+### Stage M2 (Current)
+- Cards are generated
+- Cards are sent in private messages
+- Each player receives their own hand
 
 ---
 
-### In a private chat
-
-- `/start` shows instructions
-- Only two buttons are available:
-  - 📜 Rules
-  - 🌐 Language
-
-No game actions are available in private chat.
-
----
-
-## 🧠 Commands
-
-### Group chats
-- `/start` — show main panel  
-- `/newgame` — create a lobby  
-- `/startgame` — start the game (host only)  
-- `/help` — how to play  
-- `/rules` — game rules  
+## 🧠 How it works (simple)
 
 ### Private chat
-- `/start` — instructions  
-- `/help` — help  
-- `/rules` — rules  
+1. Open the bot
+2. Press **New game**
+3. Forward invite message to friends
+4. Friends press **Join game**
+5. When ready, press **Start**
+
+The bot always edits one panel message instead of sending many.
+
+---
+
+## 📜 Commands
+
+### Private chat only
+- `/start` — show main panel
+- `/newgame` — create new game
+- `/startgame` — start game (host)
+- `/help` — help
+- `/rules` — rules
 
 ---
 
 ## 🛠 Installation
 
 ### Requirements
-- Python **3.10+**
-- **aiogram v3**
-- **python-dotenv**
+- Python 3.10+
+- aiogram v3
+- python-dotenv
 
----
-
-### 1. Clone the repository
+### Setup
 ```bash
 git clone https://github.com/nikobrean/telegram-aremez-bot.git
 cd telegram-aremez-bot
-```
-
----
-
-### 2. Create virtual environment (recommended)
-```bash
 python -m venv .venv
-```
-
-**Windows**
-```bash
-.venv\Scripts\activate
-```
-
-**Mac / Linux**
-```bash
-source .venv/bin/activate
-```
-
----
-
-### 3. Install dependencies
-```bash
-pip install aiogram python-dotenv
-```
-
----
-
-### 4. Create `.env` file
-
-Create a file named `.env` in the project root:
-
-```env
-BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
-```
-
-⚠️ **Never upload `.env` to GitHub.**
-
----
-
-### 5. Run the bot
-```bash
-python bot.py
-```
-
-If everything is correct, you will see:
-
-```text
-✅ Bot is running: @YourBotName (id=...)
-```
-
----
-
-## 📁 Project structure
-
-```text
-bot.py
-.env                (ignored by git)
-locales/
-  en.json
-  ru.json
-  he.json
-game/
-  session.py
-  errors.py
-storage/
-  memory.py
-```
-
----
-
-## 🚀 GitHub upload (quick)
-
-```bash
-git add .
-git commit -m "Update bot logic and translations"
-git push
-```
-
----
-
-## 📝 Notes
-
-- This repository contains **Stage 1 (Lobby MVP)** only  
-- Full game logic will be added later  
-- All texts and explanations are handled via **JSON localization files**  
-- The bot is designed to be **simple, clean, and non-intrusive**
