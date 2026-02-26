@@ -1,15 +1,15 @@
 # 🎲 Aremes Telegram Bot
 
-Aremes is a Telegram game bot inspired by **deduction games**.
-The goal is to understand **who did what, where, and with what**, using logic and accusations.
+Aremes is a Telegram game bot inspired by deduction games.
+The goal of the game is to understand who did what, where, and with what, using logic and accusations.
 
 The bot is designed with:
-- **Zero chat spam**
-- **One interactive panel per user**
-- **Private game control**
-- **Multi-language support**
+- Zero chat spam
+- One interactive panel per user
+- Private game control
+- Full multi-language support
 
-Even a child can understand how to start a game.
+The interface is intentionally simple so that even a child can understand how to start a game.
 
 ---
 
@@ -20,79 +20,139 @@ Supported languages:
 - Русский
 - עברית
 
-Language affects:
-- all texts
-- buttons
-- command descriptions
-- notifications
+Language selection affects:
+- all texts in the bot
+- button labels
+- command descriptions in Telegram
+- notifications and warnings
 
-Language can be changed **at any moment**.
+Language can be changed at any time.
 
 ---
 
-## 🧩 Game Concept (MVP → M2)
+## 🧩 Game Concept
 
 - One player creates a game (host)
-- Host sends an invite message to friends
-- Friends join via **Join game** button
-- Game starts when enough players joined
-- Cards are sent **privately** to each player
+- The host sends an invite message to friends
+- Friends join the game via the Join game button
+- When enough players joined, the host starts the game
+- Cards are sent privately to each player
 
-No groups are required.
+No groups are required. The entire game is controlled via private chats.
 
 ---
 
 ## ✨ Features
 
-### Stage M1 (Lobby)
-- Create a private lobby
-- Invite players with one message
-- Join via button
-- Start game
+M1 — Lobby
+- Create a private game lobby
+- Invite players with a single message
+- Join game via button
 - Refresh lobby
-- Finish game
-- No spam (panel is edited)
+- Start game (host only)
+- Finish game (host only)
+- Zero spam (one message is edited instead of sending many)
 
-### Stage M2 (Current)
-- Cards are generated
-- Cards are sent in private messages
-- Each player receives their own hand
+M2 — Cards (current stage)
+- Cards are generated automatically
+- Cards are distributed privately to players
+- Each player sees only their own cards
 
 ---
 
-## 🧠 How it works (simple)
+## 🧠 How the Bot Works (Simple Explanation)
 
-### Private chat
+Private Chat Flow:
 1. Open the bot
-2. Press **New game**
-3. Forward invite message to friends
-4. Friends press **Join game**
-5. When ready, press **Start**
+2. Press New game
+3. Forward the invite message to friends
+4. Friends press Join game
+5. When ready, press Start
 
-The bot always edits one panel message instead of sending many.
+The bot always keeps one panel message and edits it instead of sending new messages.
 
 ---
 
 ## 📜 Commands
 
-### Private chat only
-- `/start` — show main panel
-- `/newgame` — create new game
-- `/startgame` — start game (host)
-- `/help` — help
-- `/rules` — rules
+Private chat only:
+- /start — show main panel
+- /newgame — create a new game
+- /startgame — start the game (host only)
+- /help — how to play
+- /rules — game rules
 
 ---
 
 ## 🛠 Installation
 
-### Requirements
+Requirements:
 - Python 3.10+
 - aiogram v3
 - python-dotenv
 
-### Setup
-```bash
-git clone https://github.com/nikobrean/telegram-aremez-bot.git
-cd telegram-aremez-bot
-python -m venv .venv
+Setup:
+1. Clone the repository
+   git clone https://github.com/nikobrean/telegram-aremez-bot.git
+   cd telegram-aremez-bot
+
+2. Create virtual environment
+   python -m venv .venv
+
+3. Activate virtual environment
+   Windows:
+   .venv\\Scripts\\activate
+
+   Mac / Linux:
+   source .venv/bin/activate
+
+4. Install dependencies
+   pip install aiogram python-dotenv
+
+5. Create .env file in project root
+   BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
+
+6. Run the bot
+   python bot.py
+
+If everything is correct, you will see:
+✅ Bot is running: @YourBotName (id=...)
+
+---
+
+## 📁 Project Structure
+
+bot.py
+storage/
+  memory.py
+game/
+  session.py
+  errors.py
+locales/
+  en.json
+  ru.json
+  he.json
+docs/
+  OVERVIEW.md
+
+---
+
+## 🚀 Project Status
+
+- M1 (Lobby): Completed
+- M2 (Cards): Completed
+- M3 (Turns & Accusations): Planned
+
+---
+
+## ⚠️ Important Notes
+
+- The bot works only in private chats
+- Invite messages can be forwarded freely
+- Cards are NEVER shown publicly
+- All user-facing text is stored in JSON files
+- No database is used (in-memory MVP design)
+
+---
+
+Made with love for logic and deduction games.
