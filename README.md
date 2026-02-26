@@ -1,193 +1,158 @@
-# Aremes Telegram Bot (Lobby MVP)
+# 🎲 Aremes Telegram Bot
 
-Aremes is a Telegram game bot designed with **maximum simplicity** and **zero chat spam**.  
-The bot always keeps **one main panel message** in the chat and **edits it instead of sending new messages**.
+Aremes is a Telegram game bot inspired by deduction games.
+The goal of the game is to understand who did what, where, and with what, using logic and accusations.
 
-The interface is intentionally simple so that **even a child can understand how to play**.
+The bot is designed with:
+- Zero chat spam
+- One interactive panel per user
+- Private game control
+- Full multi-language support
+
+The interface is intentionally simple so that even a child can understand how to start a game.
 
 ---
 
 ## 🌍 Languages
 
-The bot supports **three languages**:
-
+Supported languages:
 - English (default)
 - Русский
 - עברית
 
-The selected language:
-- changes **all texts in the bot**
-- changes **button labels**
-- changes **Telegram command descriptions**
-- can be changed **at any time**, both in private chats and in groups
+Language selection affects:
+- all texts in the bot
+- button labels
+- command descriptions in Telegram
+- notifications and warnings
+
+Language can be changed at any time.
 
 ---
 
-## ✨ Features (Stage 1 / MVP)
+## 🧩 Game Concept
 
-- 🎲 Create a game lobby in a group chat
-- ✅ Players can join the lobby
-- ▶️ Host can start the game
-- 👥 Minimum **3**, maximum **6** players
-- 🔄 Refresh button (only updates the screen)
-- 🌐 Language switch at any moment
-- ❓ Commands list inside the bot
-- 📜 Rules screen
-- 🚫 No spam: only one message is edited
+- One player creates a game (host)
+- The host sends an invite message to friends
+- Friends join the game via the Join game button
+- When enough players joined, the host starts the game
+- Cards are sent privately to each player
+
+No groups are required. The entire game is controlled via private chats.
 
 ---
 
-## 🔄 Refresh button (important)
+## ✨ Features
 
-The **Refresh** button does **NOT** restart the game.
+M1 — Lobby
+- Create a private game lobby
+- Invite players with a single message
+- Join game via button
+- Refresh lobby
+- Start game (host only)
+- Finish game (host only)
+- Zero spam (one message is edited instead of sending many)
 
-It only:
-- updates the lobby screen
-- re-draws the list of players
-- helps if Telegram did not refresh the message automatically
-
-If everything looks correct, **you do not need to press Refresh**.
-
----
-
-## 🤖 How the bot works (simple explanation)
-
-### In a group chat
-
-1. Add the bot to a group  
-2. Send `/start`  
-3. Press **🎲 New game**  
-4. Players press **✅ Join**  
-5. When there are **3–6 players**, the host presses **▶️ Start**
-
-The bot edits the same message instead of sending new ones.
+M2 — Cards (current stage)
+- Cards are generated automatically
+- Cards are distributed privately to players
+- Each player sees only their own cards
 
 ---
 
-### In a private chat
+## 🧠 How the Bot Works (Simple Explanation)
 
-- `/start` shows instructions
-- Only two buttons are available:
-  - 📜 Rules
-  - 🌐 Language
+Private Chat Flow:
+1. Open the bot
+2. Press New game
+3. Forward the invite message to friends
+4. Friends press Join game
+5. When ready, press Start
 
-No game actions are available in private chat.
+The bot always keeps one panel message and edits it instead of sending new messages.
 
 ---
 
-## 🧠 Commands
+## 📜 Commands
 
-### Group chats
-- `/start` — show main panel  
-- `/newgame` — create a lobby  
-- `/startgame` — start the game (host only)  
-- `/help` — how to play  
-- `/rules` — game rules  
-
-### Private chat
-- `/start` — instructions  
-- `/help` — help  
-- `/rules` — rules  
+Private chat only:
+- /start — show main panel
+- /newgame — create a new game
+- /startgame — start the game (host only)
+- /help — how to play
+- /rules — game rules
 
 ---
 
 ## 🛠 Installation
 
-### Requirements
-- Python **3.10+**
-- **aiogram v3**
-- **python-dotenv**
+Requirements:
+- Python 3.10+
+- aiogram v3
+- python-dotenv
 
----
+Setup:
+1. Clone the repository
+   git clone https://github.com/nikobrean/telegram-aremez-bot.git
+   cd telegram-aremez-bot
 
-### 1. Clone the repository
-```bash
-git clone https://github.com/nikobrean/telegram-aremez-bot.git
-cd telegram-aremez-bot
-```
+2. Create virtual environment
+   python -m venv .venv
 
----
+3. Activate virtual environment
+   Windows:
+   .venv\\Scripts\\activate
 
-### 2. Create virtual environment (recommended)
-```bash
-python -m venv .venv
-```
+   Mac / Linux:
+   source .venv/bin/activate
 
-**Windows**
-```bash
-.venv\Scripts\activate
-```
+4. Install dependencies
+   pip install aiogram python-dotenv
 
-**Mac / Linux**
-```bash
-source .venv/bin/activate
-```
+5. Create .env file in project root
+   BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
 
----
-
-### 3. Install dependencies
-```bash
-pip install aiogram python-dotenv
-```
-
----
-
-### 4. Create `.env` file
-
-Create a file named `.env` in the project root:
-
-```env
-BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN
-```
-
-⚠️ **Never upload `.env` to GitHub.**
-
----
-
-### 5. Run the bot
-```bash
-python bot.py
-```
+6. Run the bot
+   python bot.py
 
 If everything is correct, you will see:
-
-```text
 ✅ Bot is running: @YourBotName (id=...)
-```
 
 ---
 
-## 📁 Project structure
+## 📁 Project Structure
 
-```text
 bot.py
-.env                (ignored by git)
+storage/
+  memory.py
+game/
+  session.py
+  errors.py
 locales/
   en.json
   ru.json
   he.json
-game/
-  session.py
-  errors.py
-storage/
-  memory.py
-```
+docs/
+  OVERVIEW.md
 
 ---
 
-## 🚀 GitHub upload (quick)
+## 🚀 Project Status
 
-```bash
-git add .
-git commit -m "Update bot logic and translations"
-git push
-```
+- M1 (Lobby): Completed
+- M2 (Cards): Completed
+- M3 (Turns & Accusations): Planned
 
 ---
 
-## 📝 Notes
+## ⚠️ Important Notes
 
-- This repository contains **Stage 1 (Lobby MVP)** only  
-- Full game logic will be added later  
-- All texts and explanations are handled via **JSON localization files**  
-- The bot is designed to be **simple, clean, and non-intrusive**
+- The bot works only in private chats
+- Invite messages can be forwarded freely
+- Cards are NEVER shown publicly
+- All user-facing text is stored in JSON files
+- No database is used (in-memory MVP design)
+
+---
+
+Made with love for logic and deduction games.
